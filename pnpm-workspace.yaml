@@ -1,0 +1,4 @@
+packages:
+  - "apps/*"   # 应用目录
+  - "packages/*"   # 共享包目录
+  - "services/*"   # 微服务目录（可选）

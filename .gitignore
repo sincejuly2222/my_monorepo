@@ -1,0 +1,22 @@
+# 依赖
+node_modules/
+
+# 构建与测试产物
+dist/
+build/
+coverage/
+.cache/
+
+# 本地环境变量（示例文件可提交）
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# 日志与系统文件
+*.log
+.DS_Store
+
+# 编辑器配置
+.idea/
+.vscode/
