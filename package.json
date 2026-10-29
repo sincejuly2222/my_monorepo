@@ -5,7 +5,15 @@
   "description": "基于 pnpm workspace 的多包项目",
   "scripts": {
     "dev": "pnpm -r --parallel --if-present run dev",
+    "dev:web": "pnpm --filter @app/web run dev",
+    "dev:services": "pnpm --filter @my-monorepo/services run dev",
     "build": "pnpm -r --if-present run build",
+    "build:web": "pnpm --filter @app/web run build",
+    "build:services": "pnpm --filter @my-monorepo/services run build",
+    "prestart": "pnpm run build",
+    "start": "pnpm -r --parallel --if-present run start",
+    "start:services": "pnpm --filter @my-monorepo/services run start",
+    "typecheck": "pnpm -r --if-present run typecheck",
     "test": "pnpm -r --if-present run test",
     "lint": "pnpm -r --if-present run lint",
     "format": "pnpm -r --if-present run format"

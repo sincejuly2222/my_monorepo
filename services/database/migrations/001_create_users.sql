@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS users (
+  id INT(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  workno VARCHAR(10) NOT NULL COMMENT '工号',
+  name VARCHAR(10) NOT NULL COMMENT '姓名',
+  gender CHAR(1) NOT NULL COMMENT '性别',
+  age TINYINT(3) UNSIGNED NULL COMMENT '年龄',
+  idcard CHAR(18) NULL COMMENT '身份证号',
+  workaddress VARCHAR(50) NULL COMMENT '工作地址',
+  entrydate DATE NULL COMMENT '入职时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_workno (workno)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
