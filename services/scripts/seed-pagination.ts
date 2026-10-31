@@ -39,9 +39,7 @@ async function seedTable(
     `SELECT workno FROM ${tableName} WHERE workno LIKE 'PAGE%'`,
   );
   const existingWorknos = new Set(existingRows.map((row) => row.workno));
-  const pendingUsers = testUsers.filter(
-    (user) => !existingWorknos.has(user.workno),
-  );
+  const pendingUsers = testUsers.filter((user) => !existingWorknos.has(user.workno));
 
   if (pendingUsers.length === 0) {
     return 0;

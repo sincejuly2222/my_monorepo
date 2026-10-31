@@ -9,11 +9,40 @@ interface MigrationRow extends RowDataPacket {
   name: string;
 }
 
-const migrationsDirectory = fileURLToPath(
-  new URL("../database/migrations/", import.meta.url),
-);
+const migrationsDirectory = fileURLToPath(new URL("../database/migrations/", import.meta.url));
+
+function getSafeDatabaseName(databaseName: string): string {
+  if (!/^[A-Za-z0-9_]+$/.test(databaseName)) {
+    throw new Error(`数据库名称只能包含字母、数字和下划线，当前值：${databaseName}`);
+  }
+
+  return databaseName;
+}
+
+async function ensureDatabaseExists(): Promise<void> {
+  const databaseName = getSafeDatabaseName(databaseConfig.database);
+  const connection = await createConnection({
+    host: databaseConfig.host,
+    port: databaseConfig.port,
+    user: databaseConfig.user,
+    password: databaseConfig.password,
+  });
+
+  try {
+    await connection.query(`
+      CREATE DATABASE IF NOT EXISTS \`${databaseName}\`
+      CHARACTER SET utf8mb4
+      COLLATE utf8mb4_unicode_ci
+    `);
+    console.log(`数据库已就绪：${databaseName}`);
+  } finally {
+    await connection.end();
+  }
+}
 
 async function migrate(): Promise<void> {
+  await ensureDatabaseExists();
+
   const connection = await createConnection({
     ...databaseConfig,
     multipleStatements: true,
@@ -27,9 +56,7 @@ async function migrate(): Promise<void> {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     `);
 
-    const [rows] = await connection.query<MigrationRow[]>(
-      "SELECT name FROM schema_migrations",
-    );
+    const [rows] = await connection.query<MigrationRow[]>("SELECT name FROM schema_migrations");
     const appliedMigrations = new Set(rows.map((row) => row.name));
     const migrationFiles = (await readdir(migrationsDirectory))
       .filter((fileName) => fileName.endsWith(".sql"))
@@ -49,10 +76,7 @@ async function migrate(): Promise<void> {
       }
 
       await connection.query(sql);
-      await connection.execute(
-        "INSERT INTO schema_migrations (name) VALUES (?)",
-        [fileName],
-      );
+      await connection.execute("INSERT INTO schema_migrations (name) VALUES (?)", [fileName]);
 
       appliedCount += 1;
       console.log(`已执行迁移：${fileName}`);

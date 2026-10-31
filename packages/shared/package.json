@@ -4,5 +4,10 @@
   "private": true,
   "description": "跨工作区共享的代码与类型",
   "type": "module",
-  "scripts": {}
+  "scripts": {
+    "lint": "eslint . --max-warnings=0 --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint . --fix --no-error-on-unmatched-pattern",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  }
 }

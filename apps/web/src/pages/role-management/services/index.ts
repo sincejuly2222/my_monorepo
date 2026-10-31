@@ -2,6 +2,7 @@ import { del, get, httpClient, post, put } from "../../../api";
 import type {
   UserExportParams,
   UserFormValues,
+  UserImportResponse,
   UserListResponse,
   UserMutationResponse,
   UserQueryParams,
@@ -58,4 +59,31 @@ export async function exportUsers(params: UserExportParams): Promise<void> {
   downloadLink.click();
   downloadLink.remove();
   URL.revokeObjectURL(fileUrl);
+}
+
+/** 下载人员导入模板。 */
+export async function downloadUserImportTemplate(): Promise<void> {
+  const response = await httpClient.get<Blob>("/users/import/template", {
+    responseType: "blob",
+  });
+  const fileUrl = URL.createObjectURL(response.data);
+  const downloadLink = document.createElement("a");
+
+  downloadLink.href = fileUrl;
+  downloadLink.download = getDownloadFileName(response.headers["content-disposition"]);
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
+  URL.revokeObjectURL(fileUrl);
+}
+
+/** 上传 Excel 并整批导入人员。 */
+export async function importUsers(file: File): Promise<UserImportResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await httpClient.post<UserImportResponse>("/users/import", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
 }

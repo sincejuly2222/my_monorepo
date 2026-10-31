@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Form, Input, InputNumber, Modal, Select } from "antd";
-import type { User, UserFormValues } from "../types";
+import type { User, UserFormValues } from "../../types";
 
 interface UserFormModalProps {
   open: boolean;
@@ -11,13 +11,7 @@ interface UserFormModalProps {
 }
 
 /** 用户新增、编辑共用表单弹窗。 */
-export function UserFormModal({
-  open,
-  user,
-  loading,
-  onCancel,
-  onSubmit,
-}: UserFormModalProps) {
+export function UserFormModal({ open, user, loading, onCancel, onSubmit }: UserFormModalProps) {
   const [form] = Form.useForm<UserFormValues>();
 
   useEffect(() => {
@@ -46,7 +40,7 @@ export function UserFormModal({
       confirmLoading={loading}
       okText="保存"
       cancelText="取消"
-      destroyOnClose
+      destroyOnHidden
       onCancel={onCancel}
       onOk={() => form.submit()}
     >
@@ -84,11 +78,7 @@ export function UserFormModal({
           <Input placeholder="请输入姓名" />
         </Form.Item>
 
-        <Form.Item
-          label="性别"
-          name="gender"
-          rules={[{ required: true, message: "请选择性别" }]}
-        >
+        <Form.Item label="性别" name="gender" rules={[{ required: true, message: "请选择性别" }]}>
           <Select
             placeholder="请选择性别"
             options={[

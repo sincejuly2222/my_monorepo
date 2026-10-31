@@ -1,0 +1,13 @@
+process.env.NODE_ENV = "test";
+process.env.PORT = "3000";
+process.env.APP_ORIGIN = "http://localhost:5173";
+process.env.TRUST_PROXY = "0";
+process.env.AUTH_JWT_SECRET = "test-secret-that-is-at-least-32-bytes-long";
+process.env.AUTH_JWT_ISSUER = "my-monorepo-api";
+process.env.AUTH_JWT_AUDIENCE = "my-monorepo-web";
+process.env.AUTH_SESSION_TTL_SECONDS = "7200";
+process.env.DB_HOST = "127.0.0.1";
+process.env.DB_PORT = "3306";
+process.env.DB_USER = "test";
+process.env.DB_PASSWORD = "test";
+process.env.DB_NAME = "my_monorepo_test";

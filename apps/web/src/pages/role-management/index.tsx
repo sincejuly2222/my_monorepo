@@ -4,6 +4,7 @@ import {
   DownloadOutlined,
   EditOutlined,
   PlusOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   PageContainer,
@@ -14,12 +15,15 @@ import {
 import { App, Button, Popconfirm, Space, Tag } from "antd";
 import { zhPaginationLocale } from "../../config/pagination";
 import { UserFormModal } from "./components/UserFormModal";
+import { UserImportModal } from "./components/UserImportModal";
 import {
   addUsers,
   deleteUsers,
   editUser,
   exportUsers,
   getUsers,
+  downloadUserImportTemplate,
+  importUsers,
 } from "./services";
 import type { User, UserExportParams, UserFormValues } from "./types";
 
@@ -57,9 +61,7 @@ const baseColumns: ProColumns<User>[] = [
     width: 90,
     search: false,
     render: (_, record) => (
-      <Tag color={record.gender === "男" ? "blue" : "magenta"}>
-        {record.gender}
-      </Tag>
+      <Tag color={record.gender === "男" ? "blue" : "magenta"}>{record.gender}</Tag>
     ),
   },
   {
@@ -95,15 +97,14 @@ export function RoleManagementPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const exportParamsRef = useRef<UserExportParams>({});
 
   async function handleSubmit(values: UserFormValues): Promise<boolean> {
     setSubmitting(true);
 
     try {
-      const result = editingUser
-        ? await editUser(editingUser.id, values)
-        : await addUsers(values);
+      const result = editingUser ? await editUser(editingUser.id, values) : await addUsers(values);
 
       message.success(result.message);
       setFormOpen(false);
@@ -140,6 +141,15 @@ export function RoleManagementPage() {
     } finally {
       setExporting(false);
     }
+  }
+
+  async function handleImport(file: File) {
+    const result = await importUsers(file);
+    message.success(result.message);
+    setImportOpen(false);
+    setSelectedRowKeys([]);
+    actionRef.current?.reload();
+    return result;
   }
 
   const columns: ProColumns<User>[] = [
@@ -224,9 +234,7 @@ export function RoleManagementPage() {
           selectedRowKeys,
           onChange: setSelectedRowKeys,
         }}
-        tableAlertRender={({ selectedRowKeys: keys }) =>
-          `已选择 ${keys.length} 项`
-        }
+        tableAlertRender={({ selectedRowKeys: keys }) => `已选择 ${keys.length} 项`}
         tableAlertOptionRender={() => (
           <Button
             type="link"
@@ -238,8 +246,7 @@ export function RoleManagementPage() {
                 okText: "删除",
                 okButtonProps: { danger: true },
                 cancelText: "取消",
-                onOk: () =>
-                  handleDelete(selectedRowKeys.map((key) => Number(key))),
+                onOk: () => handleDelete(selectedRowKeys.map((key) => Number(key))),
               });
             }}
           >
@@ -247,6 +254,9 @@ export function RoleManagementPage() {
           </Button>
         )}
         toolBarRender={() => [
+          <Button key="import" icon={<UploadOutlined />} onClick={() => setImportOpen(true)}>
+            导入人员
+          </Button>,
           <Button
             key="export"
             icon={<DownloadOutlined />}
@@ -278,6 +288,13 @@ export function RoleManagementPage() {
           setEditingUser(null);
         }}
         onSubmit={handleSubmit}
+      />
+
+      <UserImportModal
+        open={importOpen}
+        onCancel={() => setImportOpen(false)}
+        onDownloadTemplate={downloadUserImportTemplate}
+        onSubmit={handleImport}
       />
     </PageContainer>
   );

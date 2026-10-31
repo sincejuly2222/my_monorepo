@@ -1,13 +1,9 @@
-import {
-  CheckCircleOutlined,
-  DatabaseOutlined,
-  RocketOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, DatabaseOutlined, RocketOutlined } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { Col, Row, Statistic, Typography } from "antd";
 
 /**
- * 后台管理系统工作台占位页。
+ * 后台管理系统工作台页面。
  */
 export function DashboardPage() {
   return (

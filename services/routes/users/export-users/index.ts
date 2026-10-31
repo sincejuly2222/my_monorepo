@@ -5,10 +5,8 @@ import type { UserRow } from "../types.js";
 
 /** 导出符合查询条件的用户 Excel 文件。 */
 export const exportUsers: RequestHandler = async (request, response, next) => {
-  const workno =
-    typeof request.query.workno === "string" ? request.query.workno.trim() : "";
-  const name =
-    typeof request.query.name === "string" ? request.query.name.trim() : "";
+  const workno = typeof request.query.workno === "string" ? request.query.workno.trim() : "";
+  const name = typeof request.query.name === "string" ? request.query.name.trim() : "";
   const conditions: string[] = [];
   const filterValues: string[] = [];
 
@@ -22,9 +20,7 @@ export const exportUsers: RequestHandler = async (request, response, next) => {
     filterValues.push(`%${name}%`);
   }
 
-  const whereClause = conditions.length
-    ? `WHERE ${conditions.join(" AND ")}`
-    : "";
+  const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 
   try {
     const [users] = await databasePool.query<UserRow[]>(

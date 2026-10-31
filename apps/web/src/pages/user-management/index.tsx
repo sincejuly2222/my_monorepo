@@ -38,9 +38,7 @@ const columns: ProColumns<SysUser>[] = [
     width: 90,
     search: false,
     render: (_, record) => (
-      <Tag color={record.gender === "男" ? "blue" : "magenta"}>
-        {record.gender}
-      </Tag>
+      <Tag color={record.gender === "男" ? "blue" : "magenta"}>{record.gender}</Tag>
     ),
   },
   {

@@ -55,3 +55,27 @@ export interface UserExportParams {
   workno?: string;
   name?: string;
 }
+
+/** 人员导入中的单条校验错误。 */
+export interface UserImportError {
+  row: number;
+  field: string;
+  message: string;
+}
+
+/** 人员导入成功响应。 */
+export interface UserImportResponse {
+  message: string;
+  data: {
+    importedCount: number;
+  };
+}
+
+/** 人员导入失败响应。 */
+export interface UserImportErrorResponse {
+  message?: string;
+  data?: {
+    errors?: UserImportError[];
+    totalErrors?: number;
+  };
+}

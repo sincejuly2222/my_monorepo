@@ -4,6 +4,8 @@ import { addUsers } from "./add-users/index.js";
 import { deleteUsers } from "./delete-users/index.js";
 import { editUser } from "./edit-user/index.js";
 import { exportUsers } from "./export-users/index.js";
+import { importUsers, uploadUserImport } from "./import-users/index.js";
+import { downloadUserImportTemplate } from "./import-users/template/index.js";
 import type { CountRow, UserRow } from "./types.js";
 
 export const usersRouter = Router();
@@ -12,6 +14,8 @@ usersRouter.post("/", addUsers);
 usersRouter.put("/:id", editUser);
 usersRouter.delete("/", deleteUsers);
 usersRouter.get("/export", exportUsers);
+usersRouter.get("/import/template", downloadUserImportTemplate);
+usersRouter.post("/import", uploadUserImport, importUsers);
 
 usersRouter.get("/", async (request, response, next) => {
   const page = Number(request.query.page ?? 1);
@@ -32,10 +36,8 @@ usersRouter.get("/", async (request, response, next) => {
 
   try {
     const offset = (page - 1) * pageSize;
-    const workno =
-      typeof request.query.workno === "string" ? request.query.workno.trim() : "";
-    const name =
-      typeof request.query.name === "string" ? request.query.name.trim() : "";
+    const workno = typeof request.query.workno === "string" ? request.query.workno.trim() : "";
+    const name = typeof request.query.name === "string" ? request.query.name.trim() : "";
     const conditions: string[] = [];
     const filterValues: string[] = [];
 
@@ -49,9 +51,7 @@ usersRouter.get("/", async (request, response, next) => {
       filterValues.push(`%${name}%`);
     }
 
-    const whereClause = conditions.length
-      ? `WHERE ${conditions.join(" AND ")}`
-      : "";
+    const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const [users] = await databasePool.query<UserRow[]>(
       `SELECT
         id,

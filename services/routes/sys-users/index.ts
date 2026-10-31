@@ -23,10 +23,8 @@ sysUsersRouter.get("/", async (request, response, next) => {
 
   try {
     const offset = (page - 1) * pageSize;
-    const workno =
-      typeof request.query.workno === "string" ? request.query.workno.trim() : "";
-    const name =
-      typeof request.query.name === "string" ? request.query.name.trim() : "";
+    const workno = typeof request.query.workno === "string" ? request.query.workno.trim() : "";
+    const name = typeof request.query.name === "string" ? request.query.name.trim() : "";
     const conditions: string[] = [];
     const filterValues: string[] = [];
 
@@ -40,9 +38,7 @@ sysUsersRouter.get("/", async (request, response, next) => {
       filterValues.push(`%${name}%`);
     }
 
-    const whereClause = conditions.length
-      ? `WHERE ${conditions.join(" AND ")}`
-      : "";
+    const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const [users] = await databasePool.query<SysUserRow[]>(
       `SELECT
         id,

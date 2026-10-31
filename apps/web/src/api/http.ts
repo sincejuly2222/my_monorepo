@@ -1,8 +1,4 @@
-import axios, {
-  AxiosError,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-} from "axios";
+import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from "axios";
 
 interface ErrorResponse {
   message?: string;
@@ -25,19 +21,10 @@ export class HttpError extends Error {
 export const httpClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "/api",
   timeout: 10_000,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
-});
-
-httpClient.interceptors.request.use((config) => {
-  const accessToken = window.localStorage.getItem("access_token");
-
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-
-  return config;
 });
 
 httpClient.interceptors.response.use(
@@ -47,9 +34,7 @@ httpClient.interceptors.response.use(
       error.response?.data?.message ??
       (error.code === "ECONNABORTED" ? "请求超时，请稍后重试" : error.message);
 
-    return Promise.reject(
-      new HttpError(message, error.response?.status, error.response?.data),
-    );
+    return Promise.reject(new HttpError(message, error.response?.status, error.response?.data));
   },
 );
 
@@ -59,18 +44,13 @@ httpClient.interceptors.response.use(
  * @typeParam TResponse 接口响应数据类型。
  * @param config Axios 请求配置。
  */
-export async function request<TResponse>(
-  config: AxiosRequestConfig,
-): Promise<TResponse> {
+export async function request<TResponse>(config: AxiosRequestConfig): Promise<TResponse> {
   const response = await httpClient.request<TResponse>(config);
   return response.data;
 }
 
 /** 发起 GET 请求。 */
-export function get<TResponse>(
-  url: string,
-  config?: AxiosRequestConfig,
-): Promise<TResponse> {
+export function get<TResponse>(url: string, config?: AxiosRequestConfig): Promise<TResponse> {
   return request<TResponse>({ ...config, method: "GET", url });
 }
 
@@ -93,9 +73,6 @@ export function put<TResponse, TData = unknown>(
 }
 
 /** 发起 DELETE 请求。 */
-export function del<TResponse>(
-  url: string,
-  config?: AxiosRequestConfig,
-): Promise<TResponse> {
+export function del<TResponse>(url: string, config?: AxiosRequestConfig): Promise<TResponse> {
   return request<TResponse>({ ...config, method: "DELETE", url });
 }

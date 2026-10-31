@@ -1,9 +1,1 @@
-export {
-  HttpError,
-  del,
-  get,
-  httpClient,
-  post,
-  put,
-  request,
-} from "./http";
+export { HttpError, del, get, httpClient, post, put, request } from "./http";
