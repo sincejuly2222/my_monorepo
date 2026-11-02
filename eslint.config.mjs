@@ -52,7 +52,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["services/**/*.ts"],
+    files: ["services/**/*.ts", "services-nest/**/*.ts"],
     languageOptions: {
       globals: globals.node,
     },

@@ -1,6 +1,6 @@
 # my-monorepo
 
-基于 pnpm workspace 的 TypeScript monorepo，目前包含 React Web 应用、Express 服务和共享包目录。
+基于 pnpm workspace 的 TypeScript monorepo，目前包含 React Web 应用、Express 服务、NestJS 服务和共享包目录。
 
 ## 环境要求
 
@@ -13,7 +13,8 @@
 .
 ├─ apps/web/           # React Web 应用
 ├─ packages/shared/    # 跨工作区共享包（待完善）
-└─ services/           # Express + TypeScript 服务
+├─ services/           # Express + TypeScript 服务
+└─ services-nest/      # NestJS + TypeScript 服务
 ```
 
 ## 安装依赖
@@ -28,9 +29,10 @@ pnpm install
 
 ```bash
 cp services/.env.example services/.env
+cp services-nest/.env.example services-nest/.env
 ```
 
-然后根据本机 MySQL 修改 `services/.env`。该文件包含密码且已被 Git 忽略，不应提交。
+然后根据本机 MySQL 修改两个 `.env` 中的数据库配置。这些文件包含密码且已被 Git 忽略，不应提交。NestJS 服务使用相同的 `users` 表查询用户列表。
 
 登录鉴权还需要在 `services/.env` 中设置 `APP_ORIGIN` 和 JWT 配置。开发环境可保留示例中的 issuer、audience 和两小时有效期，但必须替换 `AUTH_JWT_SECRET`。可用以下命令生成随机密钥：
 
@@ -79,7 +81,13 @@ pnpm dev:services
 pnpm dev:web
 ```
 
-服务默认监听 `http://localhost:3000`。可通过 `PORT` 环境变量修改端口。
+只启动 NestJS 服务：
+
+```bash
+pnpm dev:services-nest
+```
+
+Express 服务默认监听 `http://localhost:3000`，NestJS 服务默认监听 `http://localhost:3001`。两者均可通过 `PORT` 环境变量修改端口。NestJS 服务提供 `GET /`、`GET /health` 和 `GET /api/users?page=1&pageSize=20&workno=&name=` 分页查询接口。
 
 ## 生产启动
 
@@ -89,7 +97,7 @@ pnpm dev:web
 pnpm start
 ```
 
-已有接口：
+Express 服务已有接口：
 
 - `GET /health`：服务健康检查
 - `GET /ready`：MySQL 数据库就绪检查
@@ -127,6 +135,7 @@ curl -i -b /tmp/my-monorepo-cookie.txt \
 ```bash
 pnpm build            # 构建所有工作区
 pnpm build:web        # 构建 Web 项目
+pnpm build:services-nest # 构建 NestJS 服务
 pnpm typecheck        # 检查所有工作区的 TypeScript 类型
 pnpm test             # 运行所有已配置的测试
 pnpm lint             # 使用 ESLint 检查整个仓库
@@ -134,7 +143,9 @@ pnpm lint:fix         # 自动修复可安全修复的 ESLint 问题
 pnpm format           # 使用 Prettier 格式化整个仓库
 pnpm format:check     # 检查代码是否符合 Prettier 规范
 pnpm dev:services     # 以开发模式启动服务
+pnpm dev:services-nest # 以开发模式启动 NestJS 服务
 pnpm start:services   # 启动已构建的服务
+pnpm start:services-nest # 启动已构建的 NestJS 服务
 pnpm --filter @my-monorepo/services db:migrate # 执行数据库迁移
 pnpm --filter @my-monorepo/services auth:create-admin # 创建管理员
 ```

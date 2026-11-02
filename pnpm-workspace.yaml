@@ -3,3 +3,4 @@ packages:
   - "packages/*" # 共享包目录
   - "services" # 当前服务项目
   - "services/*" # 微服务目录（可选）
+  - "services-nest" # NestJS 服务
