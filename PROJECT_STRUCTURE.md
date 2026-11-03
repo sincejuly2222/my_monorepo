@@ -5,8 +5,12 @@
 ```text
 my_monorepo/
 ├── apps/                         # 可独立运行或部署的应用
-│   └── web/                      # Web 应用：@app/web
-│       └── package.json          # 应用配置与依赖
+│   ├── web/                      # React Web 应用：@app/web
+│   │   └── package.json          # 应用配置与依赖
+│   └── vue-web/                  # Vue 3 Web 应用：vue-web
+│       ├── src/                  # Vue 单文件组件与入口
+│       ├── public/               # 静态资源
+│       └── package.json          # 开发、构建与检查脚本
 ├── packages/                     # 跨应用复用的工作区包
 │   └── shared/                   # 共享包：@app/shared
 │       └── package.json          # 共享包配置
@@ -29,12 +33,14 @@ my_monorepo/
 flowchart TB
     Root["根工作区<br/>my-monorepo"]
     Web["Web 应用<br/>apps/web<br/>@app/web"]
+    VueWeb["Vue 3 应用<br/>apps/vue-web<br/>vue-web"]
     Shared["共享包<br/>packages/shared<br/>@app/shared"]
     Services["后端服务<br/>services<br/>@my-monorepo/services"]
     NestServices["NestJS 服务<br/>services-nest<br/>@my-monorepo/services-nest"]
     Registry["npm 依赖<br/>lodash"]
 
     Root -->|统一管理| Web
+    Root -->|统一管理| VueWeb
     Root -->|统一管理| Shared
     Root -->|统一管理| Services
     Root -->|统一管理| NestServices
@@ -45,6 +51,7 @@ flowchart TB
 ## 模块职责
 
 - `apps/web`：承载 Web 界面、路由、页面和应用级业务逻辑。
+- `apps/vue-web`：独立的 Vue 3 + TypeScript + Vite 应用，使用 Composition API 和 CSS Modules，开发端口为 5174。
 - `packages/shared`：存放跨应用共享的类型、工具函数和通用业务逻辑，不应依赖具体应用。
 - `services`：承载 Express + TypeScript 后端服务、数据库访问、迁移与接口路由。
 - `services-nest`：承载 NestJS + TypeScript 后端服务，默认监听 3001 端口，提供基于 MySQL 的用户列表分页查询。

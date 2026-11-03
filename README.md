@@ -1,6 +1,6 @@
 # my-monorepo
 
-基于 pnpm workspace 的 TypeScript monorepo，目前包含 React Web 应用、Express 服务、NestJS 服务和共享包目录。
+基于 pnpm workspace 的 TypeScript monorepo，目前包含 React Web 应用、Vue 3 Web 应用、Express 服务、NestJS 服务和共享包目录。
 
 ## 环境要求
 
@@ -12,6 +12,7 @@
 ```text
 .
 ├─ apps/web/           # React Web 应用
+├─ apps/vue-web/       # Vue 3 + TypeScript Web 应用
 ├─ packages/shared/    # 跨工作区共享包（待完善）
 ├─ services/           # Express + TypeScript 服务
 └─ services-nest/      # NestJS + TypeScript 服务
@@ -81,6 +82,14 @@ pnpm dev:services
 pnpm dev:web
 ```
 
+只启动 Vue 3 Web 项目：
+
+```bash
+pnpm dev:vue-web
+```
+
+Vue 开发地址为 `http://localhost:5174`，可与 React 应用同时运行。详细说明见 [Vue Web 使用说明](apps/vue-web/README.md)。
+
 只启动 NestJS 服务：
 
 ```bash
@@ -135,6 +144,7 @@ curl -i -b /tmp/my-monorepo-cookie.txt \
 ```bash
 pnpm build            # 构建所有工作区
 pnpm build:web        # 构建 Web 项目
+pnpm build:vue-web    # 构建 Vue Web 项目
 pnpm build:services-nest # 构建 NestJS 服务
 pnpm typecheck        # 检查所有工作区的 TypeScript 类型
 pnpm test             # 运行所有已配置的测试
@@ -143,6 +153,7 @@ pnpm lint:fix         # 自动修复可安全修复的 ESLint 问题
 pnpm format           # 使用 Prettier 格式化整个仓库
 pnpm format:check     # 检查代码是否符合 Prettier 规范
 pnpm dev:services     # 以开发模式启动服务
+pnpm dev:vue-web      # 启动 Vue Web，端口 5174
 pnpm dev:services-nest # 以开发模式启动 NestJS 服务
 pnpm start:services   # 启动已构建的服务
 pnpm start:services-nest # 启动已构建的 NestJS 服务
@@ -154,7 +165,7 @@ pnpm --filter @my-monorepo/services auth:create-admin # 创建管理员
 
 整个仓库统一使用根目录的 ESLint 和 Prettier 配置，TypeScript、React、Node.js、JSON、YAML、Markdown 和样式文件均通过根命令检查或格式化。各工作区也提供相同的 `lint`、`lint:fix`、`format` 和 `format:check` 脚本，便于按工作区执行。
 
-前端组件统一使用“组件目录 + `index.tsx`”结构，例如：
+React 前端组件统一使用“组件目录 + `index.tsx`”结构，例如：
 
 ```text
 src/
@@ -165,10 +176,13 @@ src/
 
 `main.tsx` 是应用启动入口，不属于 React 组件，因此保留入口文件命名。新增组件时，目录使用 `PascalCase`，实现文件统一命名为 `index.tsx`；页面目录继续使用小写 kebab-case，并以 `index.tsx` 作为入口。
 
+Vue 应用使用“组件目录 + `index.vue`”结构、`<script setup lang="ts">` 和 Composition API；应用入口为 `main.ts`。组件名通过 `defineOptions` 明确指定。
+
 ### 前端样式约定
 
-- `src/index.css` 仅保留 Tailwind 入口与全局基础样式，由 `main.tsx` 导入；ESLint 会阻止其他页面或组件直接导入普通 CSS。
+- `src/index.css` 仅保留全局基础样式及已使用的样式工具入口，由 `main.tsx` 或 `main.ts` 导入；ESLint 会阻止其他页面或组件直接导入普通 CSS。
 - 页面和组件使用同目录的 `index.module.css`，通过 `import styles from "./index.module.css"` 引用；页面样式只管理外壳和布局，组件样式由组件自己维护。
+- Vue 单文件组件使用 `<style module>` 和 `$style` 隔离样式，同样避免引入全局页面选择器。
 - CSS Modules 内类名使用 camelCase；优先直接给元素绑定类名，状态通过 `data-*` 或 `aria-*` 表达，避免全局状态类。
 - Ant Design 颜色、圆角、控件高度优先使用局部 `ConfigProvider` 的 Token，布局使用 CSS Modules；同一属性不要同时由 Tailwind 和组件 CSS 控制。
 - 第三方内部类覆盖必须放在局部根节点下并显式使用 `:global(...)`，说明兼容原因；禁止裸写全局 `.ant-*` 或依赖生成的哈希类名，避免 `!important`。

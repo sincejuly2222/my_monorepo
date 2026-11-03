@@ -9,10 +9,12 @@
   "scripts": {
     "dev": "pnpm -r --parallel --if-present run dev",
     "dev:web": "pnpm --filter @app/web run dev",
+    "dev:vue-web": "pnpm --filter vue-web run dev",
     "dev:services": "pnpm --filter @my-monorepo/services run dev",
     "dev:services-nest": "pnpm --filter @my-monorepo/services-nest run dev",
     "build": "pnpm -r --if-present run build",
     "build:web": "pnpm --filter @app/web run build",
+    "build:vue-web": "pnpm --filter vue-web run build",
     "build:services": "pnpm --filter @my-monorepo/services run build",
     "build:services-nest": "pnpm --filter @my-monorepo/services-nest run build",
     "prestart": "pnpm run build",
@@ -36,6 +38,8 @@
     "eslint-plugin-react-refresh": "^0.4",
     "globals": "^16",
     "prettier": "^3",
+    "eslint-plugin-vue": "^10.12.0",
+    "vue-eslint-parser": "^10.4.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8"
   }
