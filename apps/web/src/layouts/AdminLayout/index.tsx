@@ -2,6 +2,7 @@ import {
   ContactsOutlined,
   DashboardOutlined,
   LogoutOutlined,
+  RobotOutlined,
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -19,6 +20,11 @@ const menuRoutes: MenuDataItem[] = [
     icon: <DashboardOutlined />,
   },
   {
+    path: "/ai-assistant",
+    name: "AI 助手",
+    icon: <RobotOutlined />,
+  },
+  {
     path: "/users",
     name: "用户管理",
     icon: <ContactsOutlined />,
@@ -30,10 +36,14 @@ const menuRoutes: MenuDataItem[] = [
   },
 ];
 
+export interface AdminLayoutProps {
+  variant?: "admin" | "bare";
+}
+
 /**
  * 后台管理系统公共布局，负责侧边菜单、顶部栏和内容区域。
  */
-export function AdminLayout() {
+export function AdminLayout({ variant = "admin" }: AdminLayoutProps) {
   const { message } = App.useApp();
   const location = useLocation();
   const navigate = useNavigate();
@@ -91,6 +101,10 @@ export function AdminLayout() {
         </Spin>
       </div>
     );
+  }
+
+  if (variant === "bare") {
+    return <Outlet />;
   }
 
   return (

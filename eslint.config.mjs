@@ -52,6 +52,21 @@ export default tseslint.config(
     },
   },
   {
+    files: ["apps/web/src/**/*.{ts,tsx}"],
+    ignores: ["apps/web/src/main.tsx"],
+    rules: {
+      // 全局样式仅由应用入口导入，组件和页面使用 CSS Modules。
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "ImportDeclaration[source.value=/[.]css$/]:not([source.value=/[.]module[.]css$/])",
+          message: "页面和组件请使用 *.module.css，全局 CSS 只能由 main.tsx 导入。",
+        },
+      ],
+    },
+  },
+  {
     files: ["services/**/*.ts", "services-nest/**/*.ts"],
     languageOptions: {
       globals: globals.node,

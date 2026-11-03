@@ -1,0 +1,11 @@
+.scope {
+  --assistant-accent: #1677ff;
+  --assistant-accent-soft: #eaf2ff;
+  --assistant-background: #ffffff;
+  --assistant-sidebar: #f5f6f8;
+  --assistant-surface: #ffffff;
+  --assistant-text: #202124;
+  --assistant-muted: #667085;
+  --assistant-subtle: #8b95a5;
+  --assistant-border: #e4e7ec;
+}

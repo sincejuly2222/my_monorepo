@@ -1,0 +1,359 @@
+@keyframes login-brand-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes login-form-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100dvh;
+  grid-template-columns: minmax(360px, 44%) minmax(0, 1fr);
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.brandPanel {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100%;
+  overflow: hidden;
+  padding: 56px clamp(40px, 6vw, 88px);
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 86% 16%, rgb(255 255 255 / 14%), transparent 28%),
+    linear-gradient(145deg, #0b4fb6 0%, #1266dc 58%, #0b57c7 100%);
+}
+
+.brandPanel::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 5%) 1px, transparent 1px);
+  background-size: 48px 48px;
+  content: "";
+  mask-image: linear-gradient(to bottom right, #000, transparent 70%);
+}
+
+.brandContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(100%, 520px);
+  align-self: stretch;
+  flex-direction: column;
+  animation: login-brand-enter 520ms ease-out both;
+}
+
+.brandName,
+.mobileBrand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.brandMark {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1266dc;
+  font-size: 20px;
+  font-weight: 750;
+  box-shadow: 0 10px 30px rgb(0 31 94 / 20%);
+}
+
+.brandCopy {
+  margin-top: auto;
+  margin-bottom: 32px;
+}
+
+.brandCopy .brandEyebrow {
+  color: rgb(255 255 255 / 72%);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+}
+
+/* 保留登录页 Typography 的局部排版兼容规则，避免覆盖其他页面。 */
+.brandCopy :global(.ant-typography) {
+  color: #ffffff;
+}
+
+.brandTitle {
+  max-width: 520px;
+  margin: 16px 0 18px;
+  color: #ffffff;
+  font-size: clamp(36px, 3.6vw, 52px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.04em;
+}
+
+.brandCopy p:global(.ant-typography) {
+  max-width: 460px;
+  margin: 0;
+  color: rgb(255 255 255 / 78%);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.capabilityList {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 28px;
+  list-style: none;
+}
+
+.capabilityList li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgb(255 255 255 / 86%);
+  font-size: 14px;
+}
+
+.brandVisual {
+  position: absolute;
+  top: 12%;
+  right: -70px;
+  display: flex;
+  width: 280px;
+  height: 280px;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255 255 255 / 38%);
+  font-size: 68px;
+}
+
+.brandOrbit {
+  position: absolute;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 50%;
+}
+
+.brandOrbitOuter {
+  inset: 0;
+}
+
+.brandOrbitInner {
+  inset: 42px;
+}
+
+.formPanel {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 56px clamp(32px, 8vw, 120px);
+  background: #ffffff;
+}
+
+.formContent {
+  width: min(100%, 420px);
+  animation: login-form-enter 460ms 120ms ease-out both;
+}
+
+.formHeading {
+  margin-bottom: 34px;
+}
+
+.formHeading h1:global(.ant-typography) {
+  margin: 0 0 10px;
+  color: #17233c;
+  font-size: 32px;
+  letter-spacing: -0.025em;
+}
+
+.formHeading p:global(.ant-typography) {
+  margin: 0;
+  color: #667085;
+  font-size: 15px;
+}
+
+.formContent :global(.ant-form-item) {
+  margin-bottom: 24px;
+}
+
+.formContent :global(.ant-form-item-label) > label {
+  height: auto;
+  color: #344054;
+  font-weight: 550;
+}
+
+.formContent :global(.ant-input-affix-wrapper) {
+  min-height: 48px;
+  padding-inline: 14px;
+  border-color: #d0d5dd;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.formContent :global(.ant-input-prefix) {
+  margin-inline-end: 10px;
+  color: #98a2b3;
+}
+
+.formContent :global(.ant-input-affix-wrapper-focused) {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 3px rgb(22 119 255 / 12%);
+}
+
+.passwordToggle {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  margin: -4px -6px -4px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #8c8c8c;
+  cursor: pointer;
+}
+
+.passwordToggle:hover {
+  background: #f2f4f7;
+  color: #475467;
+}
+
+.passwordToggle:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 1px;
+}
+
+.formContent .submitItem {
+  margin-top: 32px;
+  margin-bottom: 18px;
+}
+
+.formContent .submitItem :global(.ant-btn) {
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgb(22 119 255 / 20%);
+}
+
+.formNote {
+  display: block;
+  color: #98a2b3;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.mobileBrand {
+  display: none;
+  color: #17233c;
+}
+
+.copyright {
+  position: absolute;
+  bottom: 28px;
+  color: #98a2b3;
+  font-size: 12px;
+}
+
+@media (max-width: 1023px) {
+  .page {
+    display: block;
+    overflow: auto;
+  }
+
+  .brandPanel {
+    display: none;
+  }
+
+  .formPanel {
+    min-height: 100vh;
+    min-height: 100dvh;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    padding: 40px clamp(24px, 8vw, 72px) 72px;
+  }
+
+  .mobileBrand {
+    position: absolute;
+    top: 32px;
+    left: clamp(24px, 8vw, 72px);
+    display: flex;
+  }
+
+  .formContent {
+    margin: 72px auto 32px;
+  }
+
+  .copyright {
+    right: 0;
+    bottom: 24px;
+    left: 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 479px) {
+  .formPanel {
+    justify-content: flex-start;
+    padding: 28px 24px 64px;
+  }
+
+  .mobileBrand {
+    position: static;
+    font-size: 16px;
+  }
+
+  .mobileBrand .brandMark {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .formContent {
+    margin: 72px 0 32px;
+  }
+
+  .formHeading h1:global(.ant-typography) {
+    font-size: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandContent,
+  .formContent {
+    animation: none;
+  }
+}

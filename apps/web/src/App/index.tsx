@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AdminLayout } from "../layouts/AdminLayout";
+import { AiAssistantPage } from "../pages/ai-assistant";
 import { DashboardPage } from "../pages/dashboard";
 import { LoginPage } from "../pages/login";
 import { NotFoundPage } from "../pages/not-found";
@@ -15,6 +16,9 @@ export function App() {
       <Routes>
         <Route index element={<Navigate to="/login" replace />} />
         <Route path="login" element={<LoginPage />} />
+        <Route element={<AdminLayout variant="bare" />}>
+          <Route path="ai-assistant" element={<AiAssistantPage />} />
+        </Route>
         <Route element={<AdminLayout />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="users" element={<UserManagementPage />} />

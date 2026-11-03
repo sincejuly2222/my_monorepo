@@ -10,6 +10,7 @@ import { App, Button, Form, Input, Typography } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "./services";
+import styles from "./index.module.css";
 
 interface LoginFormValues {
   username: string;
@@ -43,25 +44,25 @@ export function LoginPage() {
   }
 
   return (
-    <main className="login-page">
-      <section className="login-brand-panel" aria-label="系统简介">
-        <div className="login-brand-content">
-          <div className="login-brand-name">
-            <span className="login-brand-mark" aria-hidden="true">
+    <main className={styles.page}>
+      <section className={styles.brandPanel} aria-label="系统简介">
+        <div className={styles.brandContent}>
+          <div className={styles.brandName}>
+            <span className={styles.brandMark} aria-hidden="true">
               A
             </span>
             <span>后台管理系统</span>
           </div>
 
-          <div className="login-brand-copy">
-            <Typography.Text className="login-brand-eyebrow">ADMIN WORKSPACE</Typography.Text>
-            <p className="login-brand-title">统一管理人员与角色信息</p>
+          <div className={styles.brandCopy}>
+            <Typography.Text className={styles.brandEyebrow}>ADMIN WORKSPACE</Typography.Text>
+            <p className={styles.brandTitle}>统一管理人员与角色信息</p>
             <Typography.Paragraph>
               集中维护基础资料与日常管理任务，让后台操作保持清晰、有序。
             </Typography.Paragraph>
           </div>
 
-          <ul className="login-capability-list" aria-label="系统能力">
+          <ul className={styles.capabilityList} aria-label="系统能力">
             {capabilities.map((capability) => (
               <li key={capability}>
                 <CheckCircleOutlined aria-hidden="true" />
@@ -71,23 +72,23 @@ export function LoginPage() {
           </ul>
         </div>
 
-        <div className="login-brand-visual" aria-hidden="true">
-          <div className="login-brand-orbit login-brand-orbit-outer" />
-          <div className="login-brand-orbit login-brand-orbit-inner" />
+        <div className={styles.brandVisual} aria-hidden="true">
+          <div className={styles.brandOrbit + " " + styles.brandOrbitOuter} />
+          <div className={styles.brandOrbit + " " + styles.brandOrbitInner} />
           <SafetyCertificateOutlined />
         </div>
       </section>
 
-      <section className="login-form-panel" aria-labelledby="login-form-title">
-        <div className="login-mobile-brand" aria-label="后台管理系统">
-          <span className="login-brand-mark" aria-hidden="true">
+      <section className={styles.formPanel} aria-labelledby="login-form-title">
+        <div className={styles.mobileBrand} aria-label="后台管理系统">
+          <span className={styles.brandMark} aria-hidden="true">
             A
           </span>
           <span>后台管理系统</span>
         </div>
 
-        <div className="login-form-content">
-          <div className="login-form-heading">
+        <div className={styles.formContent}>
+          <div className={styles.formHeading}>
             <Typography.Title id="login-form-title" level={1}>
               欢迎登录
             </Typography.Title>
@@ -126,7 +127,7 @@ export function LoginPage() {
                 suffix={
                   <button
                     type="button"
-                    className="login-password-toggle"
+                    className={styles.passwordToggle}
                     aria-label={passwordVisible ? "隐藏密码" : "显示密码"}
                     aria-pressed={passwordVisible}
                     onClick={() => setPasswordVisible((visible) => !visible)}
@@ -141,19 +142,19 @@ export function LoginPage() {
               />
             </Form.Item>
 
-            <Form.Item className="login-submit-item">
+            <Form.Item className={styles.submitItem}>
               <Button type="primary" htmlType="submit" block loading={submitting}>
                 登录
               </Button>
             </Form.Item>
           </Form>
 
-          <Typography.Text className="login-form-note">
+          <Typography.Text className={styles.formNote}>
             登录状态将通过安全 Cookie 保存，请勿在公共设备上保留登录会话。
           </Typography.Text>
         </div>
 
-        <Typography.Text className="login-copyright">
+        <Typography.Text className={styles.copyright}>
           © {new Date().getFullYear()} 后台管理系统
         </Typography.Text>
       </section>

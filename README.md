@@ -165,6 +165,17 @@ src/
 
 `main.tsx` 是应用启动入口，不属于 React 组件，因此保留入口文件命名。新增组件时，目录使用 `PascalCase`，实现文件统一命名为 `index.tsx`；页面目录继续使用小写 kebab-case，并以 `index.tsx` 作为入口。
 
+### 前端样式约定
+
+- `src/index.css` 仅保留 Tailwind 入口与全局基础样式，由 `main.tsx` 导入；ESLint 会阻止其他页面或组件直接导入普通 CSS。
+- 页面和组件使用同目录的 `index.module.css`，通过 `import styles from "./index.module.css"` 引用；页面样式只管理外壳和布局，组件样式由组件自己维护。
+- CSS Modules 内类名使用 camelCase；优先直接给元素绑定类名，状态通过 `data-*` 或 `aria-*` 表达，避免全局状态类。
+- Ant Design 颜色、圆角、控件高度优先使用局部 `ConfigProvider` 的 Token，布局使用 CSS Modules；同一属性不要同时由 Tailwind 和组件 CSS 控制。
+- 第三方内部类覆盖必须放在局部根节点下并显式使用 `:global(...)`，说明兼容原因；禁止裸写全局 `.ant-*` 或依赖生成的哈希类名，避免 `!important`。
+- 响应式规则跟随所属组件，常用断点为 767px、479px。共享颜色放在局部主题变量中；共享控件尺寸从单一配置导出，同时供 Token 和布局变量使用。
+- Drawer 等 Portal 弹层使用组件提供的 `classNames`、`rootClassName` 等入口挂载样式和主题变量，不依赖页面父节点的 CSS 继承。
+- 修改组件库尺寸后，检查外层、内部选择框和相邻按钮的实际尺寸，并验证 320px、375px、768px 和桌面布局。
+
 ## 角色人员导入
 
 角色管理页面支持下载标准 Excel 模板并导入人员。模板包含工号、姓名、性别、年龄、工作地址和入职日期，单次最多导入 1000 条，文件不能超过 5 MB。
